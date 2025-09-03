@@ -29,8 +29,8 @@ export function drawLine(canvas: HTMLCanvasElement, data: number[], opts?: { str
   ctx.strokeStyle = color(opts?.stroke ?? { r: 16, g: 185, b: 129 })
   ctx.lineWidth = 2
   ctx.beginPath()
-  ctx.moveTo(x(0), y(data[0]))
-  for (let i = 1; i < data.length; i++) ctx.lineTo(x(i), y(data[i]))
+  ctx.moveTo(x(0), y(data[0] ?? 0))
+  for (let i = 1; i < data.length; i++) ctx.lineTo(x(i), y(data[i] ?? 0))
   ctx.stroke()
 }
 
@@ -96,7 +96,7 @@ export function drawSpider(canvas: HTMLCanvasElement, labels: string[], values01
   ctx.beginPath()
   for (let i = 0; i < N; i++) {
     const a = (i / N) * Math.PI * 2 - Math.PI / 2
-    const r = radius * Math.max(0, Math.min(1, values01[i]))
+    const r = radius * Math.max(0, Math.min(1, values01[i] ?? 0))
     const x = cx + r * Math.cos(a)
     const y = cy + r * Math.sin(a)
     if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
@@ -121,7 +121,7 @@ export function drawTornado(canvas: HTMLCanvasElement, labels: string[], deltas:
     ctx.fillStyle = '#334155'
     ctx.font = '12px sans-serif'
     ctx.textAlign = 'right'
-    ctx.fillText(r.l, cx - 6, y + rowH * 0.55)
+    ctx.fillText(r.l ?? '', cx - 6, y + rowH * 0.55)
   })
 }
 
@@ -156,6 +156,6 @@ export function drawWaterfall(canvas: HTMLCanvasElement, labels: string[], steps
     ctx.fillStyle = '#475569'
     ctx.font = '11px sans-serif'
     ctx.textAlign = 'center'
-    ctx.fillText(labels[i], x + (barW - 12) / 2, baseline + 12)
+    ctx.fillText(labels[i] ?? '', x + (barW - 12) / 2, baseline + 12)
   })
 }

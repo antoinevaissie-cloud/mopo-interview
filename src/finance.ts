@@ -41,7 +41,7 @@ export function irr(cash: number[], guess = 0.02): number | null {
 export function paybackMonths(cash: number[]): number | null {
   let cum = 0
   for (let i = 0; i < cash.length; i++) {
-    cum += cash[i]
+    cum += cash[i] ?? 0
     if (cum >= 0) return i
   }
   return null
@@ -106,7 +106,7 @@ export function perHubMonthlyAndProject(e: Effective, swapsPerDay: number, utili
   const series = buildSeries(e, swapsPerDay)
   const initOutflow = -(e.capexHub + e.capexBatt * e.batteriesPerHub)
   const cash: number[] = [initOutflow]
-  for (let t = 0; t < series.months; t++) cash.push(series.ebitdaPerHub[t])
+  for (let t = 0; t < series.months; t++) cash.push(series.ebitdaPerHub[t] ?? 0)
   const rMonthly = e.discountRatePct / 100 / 12
   const irrMonthly = irr(cash)
   const npvTotal = npv(cash, rMonthly)
@@ -133,10 +133,10 @@ export function fleetKPIs(e: Effective, perHub: PerHubMonthly, series: Series, c
   const cashFleet = cashSeries.map((v, i) => v * (i === 0 ? hubs : hubs)) // scale all equally
   const npvHorizon = npv(cashFleet, rMonthly)
   const cum: number[] = []
-  let running = cashFleet[0]
+  let running = cashFleet[0] ?? 0
   cum.push(running)
   for (let i = 1; i < cashFleet.length; i++) {
-    running += cashFleet[i]
+    running += cashFleet[i] ?? 0
     cum.push(running)
   }
 
